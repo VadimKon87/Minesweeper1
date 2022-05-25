@@ -1,0 +1,144 @@
+package minesweeper
+
+import kotlin.random.Random
+
+val minesweeperList = MutableList(9) { mutableListOf<String>(".", ".", ".", ".", ".", ".", ".", ".", ".") } // create empty field 9x9
+
+val mineList = mutableListOf<Int>() // list with mine indices
+
+fun indexOfMines() {
+    for (i in minesweeperList.indices) {
+        for (n in minesweeperList[i].indices) {
+            if (minesweeperList[i][n] == "X") {
+                mineList.add(i)
+                mineList.add(n)
+            }
+        }
+    }
+    println(mineList)
+}
+
+fun placeHintCorner1() {
+    if (minesweeperList[0][0] != "X") {
+        var nMines = 0
+        when { minesweeperList[0][1] == "X" -> nMines++ }
+        when { minesweeperList[1][0] == "X" -> nMines++ }
+        when { minesweeperList[1][1] == "X" -> nMines++ }
+        if (nMines != 0) {
+            minesweeperList[0][0] = nMines.toString()
+        }
+    }
+}
+
+fun placeHintCorner2() {
+    if (minesweeperList[0][minesweeperList.size - 1] != "X") {
+        var nMines = 0
+        when { minesweeperList[0][minesweeperList.size - 2] == "X" -> nMines++ }
+        when { minesweeperList[1][minesweeperList.size - 1] == "X" -> nMines++ }
+        when { minesweeperList[1][minesweeperList.size - 2] == "X" -> nMines++ }
+        if (nMines != 0) {
+            minesweeperList[0][minesweeperList.size - 1] = nMines.toString()
+        }
+    }
+}
+
+fun placeHintCorner3() {
+    var nMines = 0
+
+    for (i in minesweeperList.indices) {
+        for (n in minesweeperList[i].indices) {
+            if (minesweeperList[i][n] != "X") {
+                when {
+                    minesweeperList[i][n + 1] == "X" -> nMines++
+                }
+                when {
+                    minesweeperList[i + 1][n] == "X" -> nMines++
+                }
+                when {
+                    minesweeperList[i + 1][n + 1] == "X" -> nMines++
+                }
+                if (nMines != 0) {
+                    minesweeperList[i][n] = nMines.toString()
+                }
+            }
+        }
+    }
+}
+
+fun placeHintCorner4() {
+    if (minesweeperList[minesweeperList.size - 1][minesweeperList.size - 1] != "X") {
+        var nMines = 0
+        when { minesweeperList[0][minesweeperList.size - 2] == "X" -> nMines++ }
+        when { minesweeperList[1][minesweeperList.size - 1] == "X" -> nMines++ }
+        when { minesweeperList[1][minesweeperList.size - 2] == "X" -> nMines++ }
+        if (nMines != 0) {
+            minesweeperList[0][minesweeperList.size - 1] = nMines.toString()
+        }
+    }
+}
+
+fun main() {
+
+    print("How many mines do you want on the field? ")
+    val n = readln().toInt() // input number of mines
+
+    var repeatN = 0
+
+    while (repeatN != n) {
+        val randomN1 = Random.nextInt(0, 9)
+        val randomN2 = Random.nextInt(0, 9)
+        if (minesweeperList[randomN1][randomN2] != "X") {
+            minesweeperList[randomN1][randomN2] = "X"
+            repeatN++
+        }
+    }
+    indexOfMines()
+    placeHintCorner3()
+    placeHintCorner2()
+
+    for (i in minesweeperList) {
+        println(i.joinToString(""))
+    }
+
+}
+
+//minesweeperList[0].removeAt(2) -how to work with multidimensional lists
+
+        fun placeHintMiddle() {
+            for (y in 1 until minesweeperList.size - 1) {
+                for (x in 1 until minesweeperList[y].size - 1) {
+                    if (minesweeperList[y][x] != "X") {
+                        var nMines = 0
+                        when {
+                            minesweeperList[y - 1][x - 1] == "X" -> nMines++
+                        }
+                        when {
+                            minesweeperList[y - 1][x] == "X" -> nMines++
+                        }
+                        when {
+                            minesweeperList[y - 1][x + 1] == "X" -> nMines++
+                        }
+                        when {
+                            minesweeperList[y][x - 1] == "X" -> nMines++
+                        }
+                        when {
+                            minesweeperList[y][x + 1] == "X" -> nMines++
+                        }
+                        when {
+                            minesweeperList[y + 1][x - 1] == "X" -> nMines++
+                        }
+                        when {
+                            minesweeperList[y + 1][x] == "X" -> nMines++
+                        }
+                        when {
+                            minesweeperList[y + 1][x + 1] == "X" -> nMines++
+                        }
+                        if (nMines != 0) {
+                            minesweeperList[y][x] = nMines.toString()
+                        }
+                    }
+
+                }
+            }
+        }
+
